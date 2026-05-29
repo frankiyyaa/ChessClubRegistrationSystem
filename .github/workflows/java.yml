@@ -1,0 +1,26 @@
+name: Java Check
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Compile
+        run: javac -Xlint:all chessclub/ChessClubRegistrationSystem.java
+
+      - name: Run and check output
+        run: |
+          echo -e "Abebe\n21\nSWE\n2" | java chessclub.ChessClubRegistrationSystem > output.txt
+          cat output.txt
+          grep "Registration Successful!" output.txt
+          grep "=== Registered Member ===" output.txt
+          grep "=== Club Leader ===" output.txt
